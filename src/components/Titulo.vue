@@ -6,6 +6,7 @@
 export default {
   props: { texto: String },
 };
+
 </script>
 
 <style></style>

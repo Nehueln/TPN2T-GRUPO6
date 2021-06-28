@@ -8,15 +8,12 @@
     <div class="fadeIn first">
       <img src="../assets/logo1.svg" id="icon" alt="User Icon" />
     </div>
- 
+
     <!-- Login Form -->
     <form v-on:submit.prevent="login">
-      <h11> {{  this.NombreUsuario }}</h11>
-      <input type="text" id="data" class="fadeIn second" name="NombreUsuario" placeholder="Usuario" v-model="NombreUsuario">
-      <input type="text" id="data" class="fadeIn third" name="login" placeholder= "Contraseña"  v-model="contraseña">
-
-      <div> <button> <router-link to ="/MenuUsuario" @click="login()">perfil de usuario </router-link></button> </div>
-     <!-- <input type="submit" class="fadeIn fourth" value="Log In"> -->
+      <input type="text" id="login" class="fadeIn second" name="login" placeholder="Usuario" v-model="usuario">
+      <input type="text" id="password" class="fadeIn third" name="login" placeholder="Contraseña" v-model="contraseña">
+      <input type="submit" class="fadeIn fourth" value="Log In">
     </form>
 
     <!-- Remind Passowrd -->
@@ -32,82 +29,34 @@
 <script>
 import axios from 'axios';
 
-
-
-
-
 export default {
-
- 
-
   name: "Login",
+  components:{
 
- // props:{
-//nombreUsuario:{
-  //type:String,
-
- // default:document.getElementById("NombreUsuario")
-//}
-
-  //},
-  data() {
-
+  },
+  data: function(){
     return{
-         NombreUsuario:'' ,
-    
-      contraseña:'',
-      error:'',
-      error_msg:'',
-      coincide:false
+      usuario: "",
+      contraseña: "",
+      error: false,
+      error_msg: "",
     }
   },
- 
   methods:{
-    async  getUsuarios(){
-      let usuarios=[];
-   try{ let response  = await axios.get("https://60d7b108307c300017a5f974.mockapi.io/usuarios/usuarios");
-     usuarios=response.data;
-    console.log("paso bien")
-}catch(error){
-  console.log(error)
-}
-let i =0;
-  let aray=[];
-    for( i in usuarios){
-      let us=usuarios[i].nombreUsuario;
-      aray.push(us)
-    }
-       let e=aray.indexOf(this.NombreUsuario)
-      if(usuarios[e]>=0){
-       // this.usuario=this.usuarios[e];
-       this.coincide=true
-        console.log("paso bien");
-      }else {
-        console.log("paso mald" + e );
-        //this.usuario=this.usuarios[e];
-      }
-
-},
     login(){
-   //        let json= {
-  //      "usuario" : this.NombreUsuario,
-    //    "contraseña": this.contraseña,
-   //   };
-   //   axios.post('http://solodata.es/auth', json)
-   //   .them(data =>{
-     console.log("entro")
-     this.getUsuarios()
-        if(this.coincide){
+      let json= {
+        "usuario" : this.usuario,
+        "contraseña": this.contraseña,
+      };
+      axios.post('http://solodata.es/auth', json)
+      .them(data =>{
+        if(data.data.status == "ok"){
           console.log("todo correcto")
-          this.$router.push(`/MenuUsuario/${this.NombreUsuario}`)
-
         }else{
           this.error = true
-           console.log("todo incorrecto")
-     //     this.error_msg = data.result.error_msg;
+          this.error_msg = data.data.result.error_msg;
         }
-  //    });
-        
+      })  
     }
   }
   
@@ -159,7 +108,7 @@ h2 {
 #formContent {
   -webkit-border-radius: 10px 10px 10px 10px;
   border-radius: 10px 10px 10px 10px;
-  background: blue;
+  background: rgb(65, 65, 240);
   padding: 30px;
   width: 90%;
   max-width: 450px;
@@ -378,5 +327,3 @@ input[type=text]:placeholder {
 
 
 </style>
-  
-<script>
